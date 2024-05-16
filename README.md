@@ -568,6 +568,17 @@ nano /etc/bind/options.conf
 ![image](https://github.com/NyashMan/DEMO2024/assets/1348639/d903e095-bbe6-4050-b473-a475d2fd5d46)  
 
 ```
+Listen-on { any; };
+
+/*
+ * If the forward directive is set to "only", the server will only
+ * query the forwarders.
+*/
+forward first;
+forwarders { 8.8.8.8; };
+
+exit
+
 systemctl enable --now bind
 nano /etc/bind/local.conf
 ```
@@ -579,15 +590,33 @@ cp /etc/bind/zone/{127.in-addr.arpa,0.db}
 cp /etc/bind/zone/{127.in-addr.arpa,2.db}
 chown root:named /etc/bind/zone/{hq,branch,0,2}.db
 nano /etc/bind/zone/hq.db
+
+hq.work. root.hq.work.
+hq-r
+10.0.0.1
+hq-srv
+10.0.0.2
 ```
 Обратите внимание на синтаксис. Проверьте точки в конце наименований зон!
 ![image](https://github.com/NyashMan/DEMO2024/assets/1348639/e81f251c-9987-4d8d-ad47-e4ae50d99e1d)  
 ```
 nano /etc/bind/zone/branch.db
+
+branch.work.  root.branch.work.
+hq.work.
+br-r
+10.0.2.1
+br-srv
+10.0.2.2
 ```
 ![image](https://github.com/NyashMan/DEMO2024/assets/1348639/b2740789-a372-40f4-8558-b12afeb85d78)  
 ```
 nano /etc/bind/zone/0.db
+
+hq.work. root.hq.work.
+hq.work.
+hq-r.hq.work.
+hq-srv.hq.work.
 ```
 ![image](https://github.com/NyashMan/DEMO2024/assets/1348639/b4239e96-7018-4286-8861-ea53aa074e85)  
 ```
